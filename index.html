@@ -8,16 +8,26 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#e4e4e4]">
+<body class="bg-[#e4e4e4] max-w-lg mx-auto mt-8 px-4 py-6">
 
-<h1 class="font-bold flex justify-center py-5 text-3xl">Quiz Game</h1>
+<div class="flex justify-center py-5">
+  <div class="mx-auto">
+    <h1 class="font-bold pb-2 text-3xl">Quiz Game</h1>
+    <p class="font-semibold" id="timer"></p>
+  </div>
+</div>
 
-<div  id="quiz-container" class="quiz-container">
+<div class="px-10">
+<div id="quiz-container" class="quiz-container mx-auto">
   <!-- Quiz content will be dynamically generated here -->
 </div>
 
-<button class="px-5 py-2 bg-[#ff9900] font-semibold rounded-2xl" id="submit-btn">Submit Answers</button>
-<p class="pt-5 font-bold">Final Score: <span id="final-score">0</span></p>
+<div class="flex justify-center">
+  <button class="px-5 py-2 bg-[#ff9900] font-semibold rounded-2xl" id="submit-btn">Submit Answers</button>
+</div>
+
+<p class="text-center pt-2 font-bold pb-10">Final Score: <span id="final-score">0</span></p>
+</div>
 
 
 <script src="script.js"></script>
