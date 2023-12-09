@@ -1,0 +1,16 @@
+/* style.css */
+
+/* Style for the quiz questions and options */
+.question {
+  padding-top: 10px; /* Add padding top to each question */
+}
+
+.question p {
+  margin: 0; /* Remove default margin for paragraphs */
+}
+
+.quiz-container button {
+  display: block; /* Display buttons as block elements */
+  margin-bottom: 10px; /* Add margin between buttons */
+}
+
