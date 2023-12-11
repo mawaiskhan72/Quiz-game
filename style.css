@@ -1,3 +1,6 @@
+
+
+
 /* Style for the quiz questions and options */
 .question {
   padding-top: 10px; /* Add padding top to each question */
@@ -15,6 +18,8 @@
 .option-button:hover {
   background-color: #D1D5DB; /* Change to your desired color */
 }
+
+
 
 
 
