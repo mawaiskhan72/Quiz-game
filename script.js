@@ -53,6 +53,8 @@ const questions = [
 ];
 
 const quizContainer = document.getElementById('quiz-container');
+const prevButton = document.getElementById('prev-btn');
+const nextButton = document.getElementById('next-btn');
 const submitButton = document.getElementById('submit-btn');
 const finalScoreDisplay = document.getElementById('final-score');
 const timerDisplay = document.getElementById('timer');
@@ -60,6 +62,7 @@ const timerDisplay = document.getElementById('timer');
 let finalScore = 0;
 let timeLeft = 60;
 let timerInterval;
+let currentQuestion = 0;
  
 
 
@@ -68,72 +71,75 @@ function startQuiz() {
   startTimer(); // Start the timer
 }
 
+
 function displayQuiz() {
-  questions.forEach((quiz, index) => {
-    const questionDiv = document.createElement('div');
-    questionDiv.classList.add('question');
+  const currentQuiz = questions[currentQuestion];
+  quizContainer.innerHTML = ''; // Clear previous question content
 
-    const questionHeading = document.createElement('p');
-    questionHeading.textContent = `Question ${index + 1}`;
-    questionDiv.appendChild(questionHeading);
+  const questionDiv = document.createElement('div');
+  questionDiv.classList.add('question');
 
-    const questionStatement = document.createElement('p');
-    questionStatement.textContent = quiz.question;
-    questionStatement.style.paddingTop = '10px'; // Padding top for the question
-    questionDiv.appendChild(questionStatement);
+  const questionHeading = document.createElement('p');
+  questionHeading.textContent = `Question ${currentQuestion + 1}`;
+  questionHeading.classList.add('font-semibold', 'text-lg');
+  questionDiv.appendChild(questionHeading);
 
-    // Adding radio buttons for options
-    quiz.options.forEach((option, optionIndex) => {
-      const optionContainer = document.createElement('div');
+  const questionStatement = document.createElement('p');
+  questionStatement.textContent = currentQuiz.question;
+  questionStatement.style.paddingTop = '10px';
+  questionDiv.appendChild(questionStatement);
 
-      const optionRadio = document.createElement('input');
-      optionRadio.type = 'radio';
-      optionRadio.name = `question_${index}`; // Assigning same name to group the radio buttons
-      optionRadio.value = option;
-      optionRadio.classList.add('mr-2'); // Adding Tailwind CSS classes
-      optionContainer.appendChild(optionRadio);
+  // Adding radio buttons for options
+  currentQuiz.options.forEach((option, optionIndex) => {
+    const optionContainer = document.createElement('div');
 
-      const optionLabel = document.createElement('label');
-      optionLabel.textContent = option;
-      optionContainer.appendChild(optionLabel);
+    const optionRadio = document.createElement('input');
+    optionRadio.type = 'radio';
+    optionRadio.name = `question_${currentQuestion}`;
+    optionRadio.value = option;
+    optionRadio.classList.add('mr-2');
+    optionContainer.appendChild(optionRadio);
 
-      questionDiv.appendChild(optionContainer);
+    const optionLabel = document.createElement('label');
+    optionLabel.textContent = option;
+    optionContainer.appendChild(optionLabel);
 
-      // Add line break after each option
-      const lineBreak = document.createElement('br');
-      questionDiv.appendChild(lineBreak);
-    });
+    questionDiv.appendChild(optionContainer);
 
-    quizContainer.appendChild(questionDiv);
+    const lineBreak = document.createElement('br');
+    questionDiv.appendChild(lineBreak);
   });
+
+  quizContainer.appendChild(questionDiv);
 }
+
+function showNextQuestion() {
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    displayQuiz();
+  }
+}
+
+function showPreviousQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    displayQuiz();
+  }
+}
+
+
+nextButton.addEventListener('click', showNextQuestion);
+prevButton.addEventListener('click', showPreviousQuestion);
+
+
+// Display the first question on page load
+displayQuiz();
+
 
 submitButton.addEventListener('click', () => {
   calculateScore(); // Calculate and display the final score when the submit button is clicked
 });
 
-
-
-submitButton.addEventListener('click', () => {
-  calculateScore(); // Calculate and display the final score when the submit button is clicked
-});
-
-function calculateScore() {
-  finalScore = 0; // Reset finalScore to recalculate
-
-  questions.forEach((quiz, index) => {
-    const correctAnswer = quiz.answer;
-    const selectedCheckboxes = document.querySelectorAll(`input[type="checkbox"][name='question_${index}']:checked`);
-
-    const selectedOptions = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
-
-    if (selectedOptions.length === 1 && selectedOptions[0] === correctAnswer) {
-      finalScore++;
-    }
-  });
-
-  finalScoreDisplay.textContent = finalScore; // Display the final score
-}
 
 function startTimer() {
   timerInterval = setInterval(() => {
@@ -160,9 +166,11 @@ submitButton.addEventListener('click', () => {
   displayFinalScore();
 });
 
+
+
 function calculateScore() {
   finalScore = 0;
-  
+
   questions.forEach((quiz, index) => {
     const selectedRadio = document.querySelector(`input[type="radio"][name='question_${index}']:checked`);
 
@@ -171,13 +179,12 @@ function calculateScore() {
     }
   });
 
-  finalScoreDisplay.textContent = finalScore;
+  finalScoreDisplay.textContent = `Final Score: ${finalScore}`;
 }
 
 function displayFinalScore() {
-  const finalScoreText = document.createElement('p');
-  finalScoreText.textContent = `Final Score: ${finalScore}`;
+  finalScoreDisplay.style.display = 'block';
 }
 
-
+// Start the quiz
 startQuiz();
