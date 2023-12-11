@@ -141,6 +141,12 @@ submitButton.addEventListener('click', () => {
 });
 
 
+
+submitButton.addEventListener('click', () => {
+  calculateScore(); // Calculate and display the final score when the submit button is clicked
+});
+
+
 function startTimer() {
   timerInterval = setInterval(() => {
     timeLeft--;
@@ -166,11 +172,9 @@ submitButton.addEventListener('click', () => {
   displayFinalScore();
 });
 
-
-
 function calculateScore() {
   finalScore = 0;
-
+  
   questions.forEach((quiz, index) => {
     const selectedRadio = document.querySelector(`input[type="radio"][name='question_${index}']:checked`);
 
@@ -179,12 +183,13 @@ function calculateScore() {
     }
   });
 
-  finalScoreDisplay.textContent = `Final Score: ${finalScore}`;
+  finalScoreDisplay.textContent = finalScore;
 }
 
 function displayFinalScore() {
-  finalScoreDisplay.style.display = 'block';
+  const finalScoreText = document.createElement('p');
+  finalScoreText.textContent = `Final Score: ${finalScore}`;
 }
 
-// Start the quiz
+
 startQuiz();
